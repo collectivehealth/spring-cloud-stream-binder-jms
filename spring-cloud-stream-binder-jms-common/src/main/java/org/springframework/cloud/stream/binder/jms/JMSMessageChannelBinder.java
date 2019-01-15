@@ -21,10 +21,8 @@ import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.Topic;
 
-import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
-import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
-import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
-import org.springframework.cloud.stream.binder.ExtendedPropertiesBinder;
+import org.springframework.cloud.stream.binder.*;
+import org.springframework.cloud.stream.binder.jms.config.JmsBindingProperties;
 import org.springframework.cloud.stream.binder.jms.config.JmsConsumerProperties;
 import org.springframework.cloud.stream.binder.jms.config.JmsExtendedBindingProperties;
 import org.springframework.cloud.stream.binder.jms.config.JmsProducerProperties;
@@ -69,7 +67,8 @@ public class JMSMessageChannelBinder
 			JmsMessageDrivenChannelAdapterFactory jmsMessageDrivenChannelAdapterFactory,
 			JmsTemplate jmsTemplate,
 			ConnectionFactory connectionFactory) {
-		super(true, null, provisioningProvider);
+		//super(true, null, provisioningProvider);
+		super(new String[0], provisioningProvider, null);
 		this.jmsSendingMessageHandlerFactory = jmsSendingMessageHandlerFactory;
 		this.jmsMessageDrivenChannelAdapterFactory = jmsMessageDrivenChannelAdapterFactory;
 		this.connectionFactory = connectionFactory;
@@ -83,7 +82,7 @@ public class JMSMessageChannelBinder
 
 	@Override
 	protected MessageHandler createProducerMessageHandler(ProducerDestination producerDestination,
-			ExtendedProducerProperties<JmsProducerProperties> producerProperties) throws Exception {
+			ExtendedProducerProperties<JmsProducerProperties> producerProperties, MessageChannel errorChannel) throws Exception { //TODO: Figure out how to use errorChannel
 		TopicPartitionRegistrar topicPartitionRegistrar = new TopicPartitionRegistrar();
 		Session session = connectionFactory.createConnection().createSession(true, 1);
 
@@ -119,5 +118,15 @@ public class JMSMessageChannelBinder
 	@Override
 	public JmsProducerProperties getExtendedProducerProperties(String channelName) {
 		return this.extendedBindingProperties.getExtendedProducerProperties(channelName);
+	}
+
+	@Override
+	public String getDefaultsPrefix() {
+		return this.extendedBindingProperties.getDefaultsPrefix();
+	}
+
+	@Override
+	public Class<? extends BinderSpecificPropertiesProvider> getExtendedPropertiesEntryClass() {
+		return this.extendedBindingProperties.getExtendedPropertiesEntryClass();
 	}
 }

@@ -10,14 +10,16 @@
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-build</artifactId>
-        <version>1.2.2.BUILD-SNAPSHOT</version>
+        <version>2.1.0.RC3</version>
     </parent>
 
     <modules>
         <module>spring-cloud-stream-binder-jms-common</module>
         <module>spring-cloud-stream-binder-jms-common-test-support</module>
+        <!--
         <module>spring-cloud-stream-binder-jms-activemq-test-support</module>
         <module>spring-cloud-stream-binder-jms-activemq</module>
+        -->
     </modules>
 
     <dependencyManagement>
@@ -25,7 +27,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-stream-dependencies</artifactId>
-                <version>Chelsea.BUILD-SNAPSHOT</version>
+                <version>Fishtown.RC4</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

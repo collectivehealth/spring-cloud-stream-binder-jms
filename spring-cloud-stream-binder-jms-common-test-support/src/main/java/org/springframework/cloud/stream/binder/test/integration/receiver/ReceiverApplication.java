@@ -23,15 +23,18 @@ import java.util.concurrent.CountDownLatch;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
+//import org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration;
+//import org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration;
+//import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
-@SpringBootApplication(exclude = {EmbeddedServletContainerAutoConfiguration.class, WebMvcAutoConfiguration.class, JmxAutoConfiguration.class})
+@SpringBootApplication(exclude = {
+		//EmbeddedServletContainerAutoConfiguration.class, WebMvcAutoConfiguration.class,
+		JmxAutoConfiguration.class})
 @EnableBinding(Sink.class)
 public class ReceiverApplication {
 
@@ -56,6 +59,7 @@ public class ReceiverApplication {
 
 			Object payload = message.getPayload();
 			if (payload.equals(EXCEPTION_REQUEST)) {
+			//if (new String((byte[]) payload).equals(EXCEPTION_REQUEST)) {  // this was needed in Elmhurst Release
 				throw new RuntimeException(REQUESTED_EXCEPTION);
 			}
 

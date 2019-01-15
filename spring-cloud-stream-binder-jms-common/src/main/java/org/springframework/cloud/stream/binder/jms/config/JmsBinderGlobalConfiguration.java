@@ -112,7 +112,7 @@ public class JmsBinderGlobalConfiguration {
 
 			JMSMessageChannelBinder jmsMessageChannelBinder = new JMSMessageChannelBinder(provisioningProvider,
 					jmsSendingMessageHandlerFactory, jmsMessageDrivenChannelAdapterFactory, jmsTemplate, connectionFactory);
-			jmsMessageChannelBinder.setCodec(codec);
+			//jmsMessageChannelBinder.setCodec(codec); //no more codec, it is all managed by content-type header parameter now
 			jmsMessageChannelBinder.setExtendedBindingProperties(jmsExtendedBindingProperties);
 			return jmsMessageChannelBinder;
 		}

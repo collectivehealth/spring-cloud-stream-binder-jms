@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 import org.springframework.cloud.stream.binder.ExtendedBindingProperties;
 
 /**
@@ -27,6 +28,8 @@ import org.springframework.cloud.stream.binder.ExtendedBindingProperties;
  */
 @ConfigurationProperties("spring.cloud.stream.jms")
 public class JmsExtendedBindingProperties implements ExtendedBindingProperties<JmsConsumerProperties, JmsProducerProperties> {
+
+	private static final String DEFAULTS_PREFIX = "spring.cloud.stream.ibmmq.default";
 
 	private Map<String, JmsBindingProperties> bindings = new HashMap<>();
 
@@ -56,5 +59,15 @@ public class JmsExtendedBindingProperties implements ExtendedBindingProperties<J
 		else {
 			return new JmsProducerProperties();
 		}
+	}
+
+	@Override
+	public String getDefaultsPrefix() {
+		return DEFAULTS_PREFIX;
+	}
+
+	@Override
+	public Class<? extends BinderSpecificPropertiesProvider> getExtendedPropertiesEntryClass() {
+		return JmsBindingProperties.class;
 	}
 }
