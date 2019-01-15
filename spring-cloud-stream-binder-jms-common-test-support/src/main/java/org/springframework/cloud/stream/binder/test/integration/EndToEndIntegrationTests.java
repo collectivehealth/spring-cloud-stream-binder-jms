@@ -28,6 +28,7 @@ import javax.jms.ConnectionFactory;
 import org.apache.commons.lang.ArrayUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import org.springframework.boot.Banner;
@@ -410,7 +411,8 @@ public abstract class EndToEndIntegrationTests {
 		});
 	}
 
-	//@Test // adding content-type did not fix the issue
+	@Ignore
+	@Test // adding content-type did not fix the issue
 	public void scs_supportsSerializable() throws Exception {
 		Sender sender = createSender(
 				String.format(OUTPUT_CONTENT_TYPE_FORMAT, "application/x-java-serialized-object")
@@ -434,7 +436,8 @@ public abstract class EndToEndIntegrationTests {
 		});
 	}
 
-	//@Test //primitive does not work but this may not be an expected behavior any more since it is expected that the application should manage the content-type
+	@Ignore
+	@Test //primitive does not work but this may not be an expected behavior any more since it is expected that the application should manage the content-type
 	public void scs_supportsPrimitive() throws Exception {
 		Sender sender = createSender();
 		Receiver receiver = createReceiver(randomGroupArg1);
@@ -476,8 +479,7 @@ public abstract class EndToEndIntegrationTests {
 		ConfigurableApplicationContext context = new SpringApplicationBuilder(ReceiverApplication.class)
 				.bannerMode(Banner.Mode.OFF)
 				.build()
-				//.run(arguments); //temp line
-				.run(applicationArguments(String.format(INPUT_DESTINATION_FORMAT, this.destination), arguments));  //original line
+				.run(applicationArguments(String.format(INPUT_DESTINATION_FORMAT, this.destination), arguments));
 
 		startedContexts.add(context);
 		return context.getBean(Receiver.class);
